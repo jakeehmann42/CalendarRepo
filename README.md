@@ -8,9 +8,10 @@ calendar API.
 ## Installation
 Add the repository to your GitHub account, then make sure the root 
 level is at master so we can publish our site. Copy and paste the URL into the browser.
+Copy the index and css files from the uofa folder that was given to us.
 
 ## Usage
-Basically very calendar function on this API should work correctly
+Basically every calendar function on this API should work correctly
 along with things being color coded for maximum neatness
 
 
