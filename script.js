@@ -38,6 +38,28 @@ for (i = 9; i <= 17; i++) {
     timeDiv.append(hour);
 
 
+    //CntentDiv(Append)
+
+    let contentDiv = $("<div>");
+    
+    contentDiv.addClass("past");
+
+    // Create if statements for time periods and add classes. ("past,present,future")
+    if (i < currentHour) {
+        contentDiv.addClass("past");
+    }
+
+    if (i === currentHour) {
+        contentDiv.addClass("present");
+    }
+
+    if (i > currentHour) {
+        contentDiv.addClass("future");
+    }
+
+    rowDiv.append(contentDiv);
+
+
 }
 
 
