@@ -1,5 +1,4 @@
 // Write current day to page
-
 let currentday = moment().format("LLLL");
 $("#currentDay").text(currentday);
 
@@ -39,7 +38,6 @@ for (i = 9; i <= 17; i++) {
 
 
     //CntentDiv(Append)
-
     let contentDiv = $("<div>");
     
     contentDiv.addClass("past");
@@ -60,19 +58,28 @@ for (i = 9; i <= 17; i++) {
     rowDiv.append(contentDiv);
 
 
+
+// Create button div and create attributes and write to the Row Div
+    let buttonDiv = $("<div>");
+    
+    buttonDiv.addClass("saveBtn col");
+
+    buttonDiv.append("<i class=\"far fa-save" + businessHours[i-9] + "\"></i>");
+
+    rowDiv.append(buttonDiv);
+
+
+    // Create a function in an IF statement to change the color based on TIME
+
+
 }
 
 
-// Create content div and add attributes and write to the row div
 
-
-// Create button div and create attributes and write to the Row Div
-
-
-// Create a function to change color (based on time) in an IF statement.
 
 
 // Event listener to unlock time slots
+
 
 
 // Test condition that will allow text inputs
