@@ -1,122 +1,80 @@
-// Write current day to page
-let currentday = moment().format("LLLL");
-$("#currentDay").text(currentday);
+let timecontainer = (".container-fluid");
+let timeArray = ["9:00 a.m", "10:00 a.m", "11:00 a.m", "12:00 p.m", "1:00 p.m", "2:00 p.m", "3:00 p.m", "4:00 p.m", "5:00 p.m"];
 
+// added array to be used in colorCode function
+let timeNumber = [9, 10, 11, 12, 13, 14, 15, 16, 17];
 
-//Make an array of business hours in order to grab
-let businessHours = ["9AM", "10AM", "11AM", "12PM", "1PM", "2PM", "3PM", "4PM", "5PM"]
+let timeDisplay = $("#currentDay")
 
-// Get the current hour
-let currentHour = parseInt(moment().format("H"));
-console.log(currentHour);
+// Time display and append to currentDay <p> tag
+let timeElement = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
+timeDisplay.append(timeElement);
 
+// THEN I am presented with timeblocks for standard business hours
 
-// Test time condition to change color of the div
-for (i = 9; i <= 17; i++) {
+// WHEN I click the save button for that timeblock
 
-    //create row div inside loop, and add attrs and write to DOM (remember to append)
-    let rowDiv = $("<div>");
+// THEN the text for that event is saved in local storage
 
-    rowDiv.addClass("row time-block");
+// for loop for timeArray creating elements with jquery
 
-    $(".container").append(rowDiv);
+for (let i = 0; i < timeArray.length; i++) {
 
+    let time = timeArray[i];
 
+    let timeSlot = $('<div>').addClass('row text-align-center');
+    let hourElement = $("<div>").addClass("time-block col text-center");
+    hourElement.text(time);
+    timeSlot.append(hourElement);
 
+    let inputElement = $("<div>").addClass("col-lg-6 col text-center color-block");
+    // adding id attribute to loop through
+    inputElement.attr("id", timeNumber[i]);
+    let inputArea = $("<textarea>").addClass('textarea');
+    $(this).attr('cols', 120);
+    inputArea.attr('id', time);
+    inputElement.append(inputArea);
+    timeSlot.append(inputElement);
 
-    //Create time div inside loop, add attrs and write to DOM (append)
-    let timeDiv = $("<div>");
+    let textInput = localStorage.getItem(time);
+    inputArea.val(textInput);
 
-    timeDiv.addClass("hour col");
+    let saveElement = $("<div>").addClass('col-lg-3 col text-center');
+    let saveBtn = $('<button>').addClass('saveBtn fa fa-save');
+    saveBtn.attr("date-time", time);
+    saveBtn.addClass('btn');
+    saveElement.append(saveBtn);
+    timeSlot.append(saveElement);
+    $(".container-fluid").append(timeSlot);
 
+    // localStorage
+    $(".saveBtn").on("click", function () {
+        localStorage.setItem(time, inputArea.val());
+    })
+};
 
-    let hour = $("<h3>");
+// THEN each timeblock is color coded to indicate whether it is in the past, present, or future
 
-    hour.text(businessHours[i - 9]);
+function colorCode() {
+    let currentHour = moment().hours()
+    // console.log(currentHour);
 
-    timeDiv.append(hour);
+    $(".color-block").each(function () {
+        let blockHour = parseInt($(this).attr('id'));
+        // console.log(blockHour)
 
-
-    //CntentDiv(Append)
-    let contentDiv = $("<div>");
-
-    contentDiv.addClass("past");
-
-    // Create if statements for time periods and add classes. ("past,present,future")
-    if (i < currentHour) {
-        contentDiv.addClass("past");
-    }
-
-    if (i === currentHour) {
-        contentDiv.addClass("present");
-    }
-
-    if (i > currentHour) {
-        contentDiv.addClass("future");
-    }
-
-    rowDiv.append(contentDiv);
-
-
-
-    // Create button div and create attributes and write to the Row Div
-    let buttonDiv = $("<div>");
-
-    buttonDiv.addClass("saveBtn col");
-
-    buttonDiv.append("<i class=\"far fa-save" + businessHours[i - 9] + "\"></i>");
-
-    rowDiv.append(buttonDiv);
-
-
-    // Create a function in an IF statement to change the color based on TIME
-
+        if (blockHour < currentHour) {
+            $(this).addClass("past");
+        } else if (blockHour === currentHour) {
+            $(this).removeClass("past");
+            $(this).addClass("present");
+        } else {
+            $(this).removeClass("present");
+            $(this).removeClass("past");
+            $(this).addClass("future");
+        }
+    })
 
 }
-
-
-
-/// NEW PC CHANGES
-// AS IN I DON'T REMEMBER ANYTHING I HAD GOING FOR ME IN THIS UNIT
-//BASICALLY STARTED OVER
-
-
-
-
-
-
-// remove old classes
-$(this).removeClass("past");
-$(this).removeClass("present");
-$(this).removeClass("future");
-
-let blockHour = parseInt($(this).attr("id").split("-")[1]);
-
-
-
-
-function timeTextUpdater() {
-    $("#today").text(moment().format("MM DD YYYY, h:mm"));
-}
-
-
-hourUpdater();
-timeTextUpdater();
-// Time Interval to see if it needs updated
-
-let hourInterval = setInterval(hourUpdater, 60000);
-
-let timeTextInterval = setInterval(timeTextUpdater, 1000);
-
-
-// loading saved data
-
-$("#nine .activity").val(localStorage.getItem("nine"));
-$("#ten .activity").val(localStorage.getItem("ten"));
-$("#eleven .activity").val(localStorage.getItem("eleven"));
-$("#twelve .activity").val(localStorage.getItem("twelve"));
-$("#one .activity").val(localStorage.getItem("one"));
-$("#two .activity").val(localStorage.getItem("two"));
-$("#three .activity").val(localStorage.getItem("three"));
-$("#four .activity").val(localStorage.getItem("four"));
-$("#five .activity").val(localStorage.getItem("five"));
+// call function
+colorCode();
